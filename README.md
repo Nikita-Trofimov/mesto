@@ -10,4 +10,4 @@
 6. Стурктура построена по БЭМ методологии
 7. Открытие popup сделано на JavaScript
 
-[Ссылка на проект](https://nikita-trofimov.github.io/mesto/)
+[Ссылка на проект](https://nikita-trofimov.github.io/mesto/index.html)
