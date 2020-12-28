@@ -22,10 +22,3 @@
 .popup__input:active {
   outline: none;
 }
-
-@media(max-width: 600px) {
-  .popup__input {
-    font-size: 14px;
-    line-height: 17px;
-  }
-}

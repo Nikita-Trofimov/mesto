@@ -16,9 +16,9 @@
 
 .card__like:focus {
   outline: none;
-  background: url("../../../images/like_black.svg") no-repeat;
 }
 
 .card__like:active {
   outline: none;
+  background: url("../../../images/like_black.svg") no-repeat;
 }
