@@ -31,8 +31,9 @@
 @import "../blocks/popup/__submit-button/popup__submit-button.css";
 @import "../blocks/popup/__close-button/popup__close-button.css";
 @import "../blocks/popup/__input/_type/popup__input_type_error.css";
-@import "../blocks/popup/__error/_visible/popup__error_visible.css";
 @import "../blocks/popup/__submit-button/_disabled/popup__button_disabled.css";
+@import "../blocks/popup/__error/popup__error-message.css";
+@import "../blocks/popup/__error/_visible/popup__error_visible.css";
 @import "../blocks/popup-illustration/popup-illustration.css";
 @import "../blocks/popup-illustration/__img/popup-illustration__img.css";
 @import "../blocks/popup-illustration/__title/popup-illustration__title.css";
