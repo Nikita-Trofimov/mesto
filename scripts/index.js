@@ -66,12 +66,6 @@ function handleCardLike(evt) {
   evt.target.classList.toggle('card__like_black');
 }
 
-function closePopupEscKey(evt) {
-  if (evt.key ==='Escape') {
-    closePopup(document.querySelector('.popup_opened'));
-  }
-}
-
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupEscKey);
@@ -80,6 +74,12 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupEscKey);
+}
+
+function closePopupEscKey(evt) {
+  if (evt.key ==='Escape') {
+    closePopup(document.querySelector('.popup_opened'));
+  }
 }
 
 function closePopupClick(popups) {
