@@ -14,6 +14,7 @@ const popupAddCard = document.querySelector('.popup-add-card');
 const cardName = popupAddCard.querySelector('.popup__input_type_name');
 const cardImage = popupAddCard.querySelector('.popup__input_type_card-link');
 const popupCardFormElement = popupAddCard.querySelector('.popup__form');
+const popupCardFormSubmitButton = popupCardFormElement.querySelector('.popup__submit-button');
 
 const cardAddButton = profile.querySelector('.profile__add-button');
 const cards = document.querySelector('.cards'); 
@@ -109,7 +110,7 @@ function handleFormCardSubmit (evt) {
   renderCard({ name: cardName.value, link: cardImage.value}, cards);
   popupCardFormElement.reset();
   closePopup(popupAddCard);
-  popupCardFormElement.querySelector('.popup__submit-button').classList.add('popup__button_disabled');
+  popupCardFormSubmitButton.classList.add('popup__button_disabled');
 }
 
 profileEditButton.addEventListener('click', () => {
