@@ -35,10 +35,18 @@ function hasInvalidInput(inputList) {
   });
 }
 
+function disableButton(button, config) {
+  button.classList.add(config.inactiveButtonClass);
+  button.setAttribute('disabled', 'disabled');
+}
+
 function toggleButtonState(inputList, buttonElement, config) {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(config.inactiveButtonClass);
-  } else buttonElement.classList.remove(config.inactiveButtonClass);
+    disableButton(buttonElement, config);
+  } else { 
+    buttonElement.classList.remove(config.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled', 'disabled');
+  }
 }
 
 const setEventListeners = (formElement, config) => {
