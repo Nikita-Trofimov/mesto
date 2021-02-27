@@ -1,10 +1,10 @@
 export class Card {
-
   constructor (cardName, cardLink, cardTemplate) {
     this._cardName = cardName;
     this._cardLink = cardLink;
     this._cardTemplate = cardTemplate;
     this._popupIllustration = document.querySelector('.popup-illustration-container');
+    this.ESCKEY = 'Escape';
   }
 
   _openPopup(popup) {
@@ -34,7 +34,7 @@ export class Card {
   }
 
   _closePopupEscKey(evt) {
-    if (evt.key ==='Escape') {
+    if (evt.key === this.ESCKEY) {
     this._popupIllustration.classList.remove('popup_opened');
     document.removeEventListener('keydown', this._closePopupEscKey);
     }

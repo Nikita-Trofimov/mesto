@@ -1,3 +1,14 @@
+const configValidation = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
+
+const ESCKEY = 'Escape';
+
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
 const profileName = profile.querySelector('.profile__title');
@@ -8,7 +19,7 @@ const nameInput = popupEditProfile.querySelector('.popup__input_type_name');
 const profInput = popupEditProfile.querySelector('.popup__input_type_profession');
 const popupProfileFormElement = popupEditProfile.querySelector('.popup__form');
 
-const popups = document.querySelectorAll('.popup')
+const popups = document.querySelectorAll('.popup');
 
 const popupAddCard = document.querySelector('.popup-add-card');
 const cardName = popupAddCard.querySelector('.popup__input_type_name');
@@ -22,7 +33,7 @@ const cards = document.querySelector('.cards');
 const cardTemplate = document.querySelector('.card-template').content;
 
 function closePopupEscKey(evt) {
-  if (evt.key ==='Escape') {
+  if (evt.key === ESCKEY) {
     closePopup(document.querySelector('.popup_opened'));
   }
 }
@@ -59,6 +70,11 @@ function handleFormProfileSubmit(evt) {
   closePopup(popupEditProfile);
 }
 
+function disableButton(button, config) {
+  button.classList.add(config.inactiveButtonClass);
+  button.setAttribute('disabled', 'disabled');
+}
+
 function handleFormCardSubmit (evt) {
   evt.preventDefault();
   renderCard(new Card(cardName.value, cardImage.value, cardTemplate).renderCard(), cards);
@@ -80,6 +96,7 @@ popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
 popupCardFormElement.addEventListener('submit', handleFormCardSubmit);
 
 import {Card} from './Card.js';
+import {FormValidator} from './FormValidator.js';
 
 function renderCard(card, wrap) {
   wrap.prepend(card);
@@ -88,3 +105,9 @@ function renderCard(card, wrap) {
 initialCards.forEach( (item) => {
   renderCard(new Card(item.name, item.link, cardTemplate).renderCard(), cards);
 });
+
+const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
+const validateEditProfileForm = new FormValidator(configValidation, popupProfileFormElement);
+
+validateAddCardForm.enableValidation();
+validateEditProfileForm.enableValidation();
