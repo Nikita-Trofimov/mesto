@@ -30,6 +30,10 @@ const popupCardFormSubmitButton = popupCardFormElement.querySelector('.popup__su
 const cardAddButton = profile.querySelector('.profile__add-button');
 const cards = document.querySelector('.cards'); 
 
+const popupIllustration = document.querySelector('.popup-illustration-container');
+const popupIllustrationImg = popupIllustration.querySelector('.popup-illustration__img');
+const popupIllustrationImgTitle = popupIllustration.querySelector('.popup-illustration__title');
+
 const cardTemplate = document.querySelector('.card-template').content;
 
 function closePopupEscKey(evt) {
@@ -89,6 +93,14 @@ profileEditButton.addEventListener('click', () => {
   openPopup(popupEditProfile)
 });
 
+
+function handleCardClick(name, link) {
+  popupIllustrationImg.src = link
+  popupIllustrationImgTitle.textContent = name
+  openPopup(popupIllustration)
+}
+
+
 cardAddButton.addEventListener('click', () => openPopup(popupAddCard));
 
 popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
@@ -103,7 +115,7 @@ function renderCard(card, wrap) {
 }
 
 initialCards.forEach( (item) => {
-  renderCard(new Card(item.name, item.link, cardTemplate).renderCard(), cards);
+  renderCard(new Card(item.name, item.link, cardTemplate, handleCardClick).renderCard(), cards);
 });
 
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);

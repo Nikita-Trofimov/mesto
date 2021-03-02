@@ -1,23 +1,10 @@
 export class Card {
-  constructor (cardName, cardLink, cardTemplate) {
+  constructor (cardName, cardLink, cardTemplate, handleCardClick) {
     this._cardName = cardName;
     this._cardLink = cardLink;
     this._cardTemplate = cardTemplate;
-    this._popupIllustration = document.querySelector('.popup-illustration-container');
+    this._handleCardClick = handleCardClick;
     this.ESCKEY = 'Escape';
-  }
-
-  _openPopup(popup) {
-    popup.classList.add('popup_opened');
-    document.addEventListener('keydown', (evt) => this._closePopupEscKey(evt, this._popupIllustration));
-  }
-  _openIllustration(_cardData) {
-    this._popupIllustrationImg = this._popupIllustration.querySelector('.popup-illustration__img');
-    this._popupIllustrationImgTitle = this._popupIllustration.querySelector('.popup-illustration__title');
-    this._popupIllustrationImg.src = this._cardLink;
-    this._popupIllustrationImg.alt = this._cardName;
-    this._popupIllustrationImgTitle.textContent = this._cardName;
-    this._openPopup(this._popupIllustration);
   }
   
   _handleCardLike(evt) {
@@ -28,21 +15,17 @@ export class Card {
     evt.target.closest('.card').remove();
   }
 
-  _closePopup(popup) {
-    popup.classList.remove('popup_opened');
-    document.removeEventListener('keydown', this._closePopupEscKey);
-  }
-
-  _closePopupEscKey(evt) {
-    if (evt.key === this.ESCKEY) {
-    this._popupIllustration.classList.remove('popup_opened');
-    document.removeEventListener('keydown', this._closePopupEscKey);
-    }
-  }
-
   _getTemplate() {
     this._cardElement = this._cardTemplate.cloneNode(true);
     return this._cardElement;
+  }
+
+  _setEventListeners() {
+    this._cardLike.addEventListener('click', this._handleCardLike);
+    this._removeCardButton.addEventListener('click', this._handleRemoveCard);
+    this._cardImage.addEventListener('click', () => {
+      this._handleCardClick(this._cardName, this._cardLink)
+    });
   }
 
   _createCard () {
@@ -50,14 +33,12 @@ export class Card {
     this._cardLike = this._cardElement.querySelector('.card__like');
     this._cardImage = this._cardElement.querySelector('.card__image');
     this._removeCardButton = this._cardElement.querySelector('.card__remove');   
-      
     this._cardElement.querySelector('.card__title').textContent = this._cardName;
-    this._cardImage .alt = this._cardName;
-    this._cardImage .src = this._cardLink;
-  
-    this._cardLike.addEventListener('click', this._handleCardLike);
-    this._removeCardButton.addEventListener('click', this._handleRemoveCard);
-    this._cardImage.addEventListener('click', () => this._openIllustration(this._cardData));
+
+    this._cardImage.alt = this._cardName;
+    this._cardImage.src = this._cardLink;
+    this._setEventListeners();
+    
     return this._cardElement;
   }
 
