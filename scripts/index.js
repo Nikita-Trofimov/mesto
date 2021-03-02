@@ -7,6 +7,9 @@ const configValidation = {
   errorClass: 'popup__error_visible'
 }
 
+import {Card} from './Card.js';
+import {FormValidator} from './FormValidator.js';
+
 const ESCKEY = 'Escape';
 
 const profile = document.querySelector('.profile');
@@ -85,9 +88,17 @@ function handleCardClick(name, link) {
   openPopup(popupIllustration)
 }
 
+function renderCard(card, wrap) {
+  wrap.prepend(card);
+}
+
+function createCard(link, image, handleCardClick) {
+  return new Card(link, image, handleCardClick).renderCard()
+}
+
 function handleFormCardSubmit (evt) {
   evt.preventDefault();
-  renderCard(new Card(cardName.value, cardImage.value, cardTemplate, handleCardClick).renderCard(), cards);
+  renderCard(createCard(cardName.value, cardImage.value, cardTemplate, handleCardClick), cards);
   popupCardFormElement.reset();
   closePopup(popupAddCard);
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -110,15 +121,8 @@ popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
 
 popupCardFormElement.addEventListener('submit', handleFormCardSubmit);
 
-import {Card} from './Card.js';
-import {FormValidator} from './FormValidator.js';
-
-function renderCard(card, wrap) {
-  wrap.prepend(card);
-}
-
 initialCards.forEach( (item) => {
-  renderCard(new Card(item.name, item.link, cardTemplate, handleCardClick).renderCard(), cards);
+  renderCard(createCard(item.name, item.link, cardTemplate, handleCardClick), cards);
 });
 
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
