@@ -79,9 +79,15 @@ function disableButton(button, config) {
   button.setAttribute('disabled', 'disabled');
 }
 
+function handleCardClick(name, link) {
+  popupIllustrationImg.src = link
+  popupIllustrationImgTitle.textContent = name
+  openPopup(popupIllustration)
+}
+
 function handleFormCardSubmit (evt) {
   evt.preventDefault();
-  renderCard(new Card(cardName.value, cardImage.value, cardTemplate).renderCard(), cards);
+  renderCard(new Card(cardName.value, cardImage.value, cardTemplate, handleCardClick).renderCard(), cards);
   popupCardFormElement.reset();
   closePopup(popupAddCard);
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -90,18 +96,15 @@ function handleFormCardSubmit (evt) {
 profileEditButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   profInput.value = profileProf.textContent;
+  validateEditProfileForm.resetValidation();
   openPopup(popupEditProfile)
 });
 
-
-function handleCardClick(name, link) {
-  popupIllustrationImg.src = link
-  popupIllustrationImgTitle.textContent = name
-  openPopup(popupIllustration)
-}
-
-
-cardAddButton.addEventListener('click', () => openPopup(popupAddCard));
+cardAddButton.addEventListener('click', () => {
+  validateAddCardForm.resetValidation();
+  popupCardFormElement.reset();
+  openPopup(popupAddCard)
+});
 
 popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
 
