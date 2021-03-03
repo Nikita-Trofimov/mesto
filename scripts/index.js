@@ -92,13 +92,13 @@ function renderCard(card, wrap) {
   wrap.prepend(card);
 }
 
-function createCard(link, image, handleCardClick) {
-  return new Card(link, image, handleCardClick).renderCard()
+function createCard(link, image) {
+  return new Card(link, image, cardTemplate, handleCardClick).renderCard()
 }
 
 function handleFormCardSubmit (evt) {
   evt.preventDefault();
-  renderCard(createCard(cardName.value, cardImage.value, cardTemplate, handleCardClick), cards);
+  renderCard(createCard(cardName.value, cardImage.value), cards);
   popupCardFormElement.reset();
   closePopup(popupAddCard);
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -122,7 +122,7 @@ popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
 popupCardFormElement.addEventListener('submit', handleFormCardSubmit);
 
 initialCards.forEach( (item) => {
-  renderCard(createCard(item.name, item.link, cardTemplate, handleCardClick), cards);
+  renderCard(createCard(item.name, item.link), cards);
 });
 
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
