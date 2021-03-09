@@ -7,8 +7,11 @@ const configValidation = {
   errorClass: 'popup__error_visible'
 }
 
-import {Card} from './Card.js';
-import {FormValidator} from './FormValidator.js';
+import {Card} from '../components/Card.js';
+import {FormValidator} from '../components/FormValidator.js';
+import {PopupWithImage} from '../components/PopupWithImage.js';
+
+import {popupIllustration} from '../utils/constants.js';
 
 const ESCKEY = 'Escape';
 
@@ -33,9 +36,9 @@ const popupCardFormSubmitButton = popupCardFormElement.querySelector('.popup__su
 const cardAddButton = profile.querySelector('.profile__add-button');
 const cards = document.querySelector('.cards'); 
 
-const popupIllustration = document.querySelector('.popup-illustration-container');
-const popupIllustrationImg = popupIllustration.querySelector('.popup-illustration__img');
-const popupIllustrationImgTitle = popupIllustration.querySelector('.popup-illustration__title');
+// const popupIllustration = document.querySelector('.popup-illustration-container');
+// const popupIllustrationImg = popupIllustration.querySelector('.popup-illustration__img');
+// const popupIllustrationImgTitle = popupIllustration.querySelector('.popup-illustration__title');
 
 const cardTemplate = document.querySelector('.card-template').content;
 
@@ -83,9 +86,11 @@ function disableButton(button, config) {
 }
 
 function handleCardClick(name, link) {
-  popupIllustrationImg.src = link
-  popupIllustrationImgTitle.textContent = name
-  openPopup(popupIllustration)
+  const popupWithImage = new PopupWithImage(name, link, popupIllustration)
+  popupWithImage.open();
+  // popupIllustrationImg.src = link
+  // popupIllustrationImgTitle.textContent = name
+  // openPopup(popupIllustration)
 }
 
 function renderCard(card, wrap) {
