@@ -11,7 +11,9 @@ import {Card} from '../components/Card.js';
 import {FormValidator} from '../components/FormValidator.js';
 import {PopupWithImage} from '../components/PopupWithImage.js';
 
-import {popupIllustration} from '../utils/constants.js';
+import {popupIllustration, initialCards} from '../utils/constants.js';
+
+import {Section} from '../components/Section.js';
 
 const ESCKEY = 'Escape';
 
@@ -35,10 +37,6 @@ const popupCardFormSubmitButton = popupCardFormElement.querySelector('.popup__su
 
 const cardAddButton = profile.querySelector('.profile__add-button');
 const cards = document.querySelector('.cards'); 
-
-// const popupIllustration = document.querySelector('.popup-illustration-container');
-// const popupIllustrationImg = popupIllustration.querySelector('.popup-illustration__img');
-// const popupIllustrationImgTitle = popupIllustration.querySelector('.popup-illustration__title');
 
 const cardTemplate = document.querySelector('.card-template').content;
 
@@ -88,22 +86,22 @@ function disableButton(button, config) {
 function handleCardClick(name, link) {
   const popupWithImage = new PopupWithImage(name, link, popupIllustration)
   popupWithImage.open();
-  // popupIllustrationImg.src = link
-  // popupIllustrationImgTitle.textContent = name
-  // openPopup(popupIllustration)
-}
-
-function renderCard(card, wrap) {
-  wrap.prepend(card);
 }
 
 function createCard(link, image) {
   return new Card(link, image, cardTemplate, handleCardClick).renderCard()
 }
 
+const CardRender = new Section({items: initialCards, renderer: (items) => {
+  const card = createCard(items.name, items.link)
+  CardRender.addItem(card);
+ }}, cards);
+ CardRender.renderedItems();
+
+
 function handleFormCardSubmit (evt) {
   evt.preventDefault();
-  renderCard(createCard(cardName.value, cardImage.value), cards);
+  CardRender.addItem(createCard(cardName.value, cardImage.value), cards);
   popupCardFormElement.reset();
   closePopup(popupAddCard);
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -126,12 +124,9 @@ popupProfileFormElement.addEventListener('submit', handleFormProfileSubmit);
 
 popupCardFormElement.addEventListener('submit', handleFormCardSubmit);
 
-initialCards.forEach( (item) => {
-  renderCard(createCard(item.name, item.link), cards);
-});
-
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
 const validateEditProfileForm = new FormValidator(configValidation, popupProfileFormElement);
 
 validateAddCardForm.enableValidation();
 validateEditProfileForm.enableValidation();
+
