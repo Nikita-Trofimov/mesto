@@ -4,7 +4,6 @@ export class Card {
     this._cardLink = cardLink;
     this._cardTemplate = cardTemplate;
     this._handleCardClick = handleCardClick;
-    this.ESCKEY = 'Escape';
   }
   
   _handleCardLike(evt) {
