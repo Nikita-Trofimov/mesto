@@ -8,8 +8,6 @@ export const configValidation = {
 }
 
 export const popupIllustration = document.querySelector('.popup-illustration-container');
-export const popupIllustrationImg = popupIllustration.querySelector('.popup-illustration__img');
-export const popupIllustrationImgTitle = popupIllustration.querySelector('.popup-illustration__title');
 
 export const popupEditProfile = document.querySelector('.popup-edit-profile');
 export const nameInput = popupEditProfile.querySelector('.popup__input_type_name'); 
@@ -22,8 +20,6 @@ export const profileName = profile.querySelector('.profile__title');
 export const profileProf = profile.querySelector('.profile__subtitle');
 
 export const popupAddCard = document.querySelector('.popup-add-card');
-export const cardName = popupAddCard.querySelector('.popup__input_type_name');
-export const cardImage = popupAddCard.querySelector('.popup__input_type_card-link');
 export const popupCardFormElement = popupAddCard.querySelector('.popup__form');
 export const popupCardFormSubmitButton = popupCardFormElement.querySelector('.popup__submit-button');
 
