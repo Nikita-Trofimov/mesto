@@ -45,7 +45,7 @@ const api = new Api({
 });
 
 const cardRender =  new Section({renderer: (cards) => {
-  const card = createCard(cards.name, cards.link)
+  const card = createCard(cards.name, cards.link, cards.likes.length)
   cardRender.addItem(card);
  }}, cardsContainer);
 
@@ -68,8 +68,8 @@ function handleCardClick(name, link) {
   popupWithImage.open(name, link);
 }
 
-function createCard(link, image) {
-  return new Card(link, image, cardTemplate, handleCardClick).renderCard()
+function createCard(link, image, cardNumbersLikes) {
+  return new Card(link, image, cardNumbersLikes, cardTemplate, handleCardClick).renderCard()
 }
 
 const formAddCard = new PopupWithForm(popupAddCard, handleFormCardSubmit); 
@@ -80,7 +80,7 @@ function handleFormCardSubmit (evt, items) {
   api.addCard(items.name, items.image).then((res) => {
      cardRender.addItem(createCard(items.name, items.image), cardsContainer);
      formAddCard.close();
-  });
+  }).catch(err => console.log('Ошибка ' + err));;
   disableButton(popupCardFormSubmitButton, configValidation);
 }
 
@@ -89,7 +89,7 @@ function handleFormProfileSubmit(evt, items) {
   api.updateProfile(items.name, items.proffesion).then((res) => {
     userInfo.setUserInfo(items.name, items.proffesion);
     profileEdit.close();
-  });
+  }).catch(err => console.log('Ошибка ' + err));;
 }
 profileEditButton.addEventListener('click', () => {
   nameInput.value = userInfo.getUserInfo().userName;
