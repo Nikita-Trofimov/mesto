@@ -4,14 +4,15 @@ import {FormValidator} from '../scripts/components/FormValidator.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import UserInfo from '../scripts/components/UserInfo.js';
+import Api from '../scripts/components/Api.js';
 
 import {
   popupIllustration,
-  initialCards,
   configValidation,
   profileEditButton,
   profileName,
   profileProf,
+  profileAvatar,
   popupEditProfile,
   nameInput,
   profInput,
@@ -20,13 +21,13 @@ import {
   popupCardFormElement,
   popupCardFormSubmitButton,
   cardAddButton,
-  cards,
-  cardTemplate
+  cardsContainer,
+  cardTemplate,
+  token,
+  server
 } from '../scripts/utils/constants.js';
 
 import {Section} from '../scripts/components/Section.js';
-
-
 
 const profileEdit = new PopupWithForm(popupEditProfile, handleFormProfileSubmit);
 profileEdit.setEventListeners();
@@ -34,6 +35,29 @@ const popupWithImage = new PopupWithImage(popupIllustration);
 popupWithImage.setEventListeners();
 
 const userInfo = new UserInfo({userName: profileName, userAbout: profileProf});
+
+const api = new Api({
+  baseUrl: server,
+  headers: {
+    authorization: token,
+    'Content-Type': 'application/json'
+  }
+});
+
+const cardRender =  new Section({renderer: (cards) => {
+  const card = createCard(cards.name, cards.link)
+  cardRender.addItem(card);
+ }}, cardsContainer);
+
+api.getInitialCards('/cards').then((cards) => {
+  cardRender.renderedItems(cards);
+}).catch(err => console.log('Ошибка ' + err));
+
+api.getProfile('/users/me').then((profile) => {
+  profileName.textContent = profile.name;
+  profileProf.textContent = profile.about;
+  profileAvatar.src = profile.avatar;
+}).catch(err => console.log('Ошибка ' + err));
 
 function disableButton(button, config) {
   button.classList.add(config.inactiveButtonClass);
@@ -48,30 +72,25 @@ function createCard(link, image) {
   return new Card(link, image, cardTemplate, handleCardClick).renderCard()
 }
 
-const cardRender = new Section({items: initialCards, renderer: (items) => {
-  const card = createCard(items.name, items.link)
-  cardRender.addItem(card);
- }}, cards);
- cardRender.renderedItems();
-
 const formAddCard = new PopupWithForm(popupAddCard, handleFormCardSubmit); 
 formAddCard.setEventListeners();
 
 function handleFormCardSubmit (evt, items) {
   evt.preventDefault();
-  cardRender.addItem(createCard(items.name, items.image), cards);
-  formAddCard.close();
+  api.addCard(items.name, items.image).then((res) => {
+     cardRender.addItem(createCard(items.name, items.image), cardsContainer);
+     formAddCard.close();
+  });
   disableButton(popupCardFormSubmitButton, configValidation);
 }
 
-
-
 function handleFormProfileSubmit(evt, items) {
   evt.preventDefault();
-  userInfo.setUserInfo(items.name, items.proffesion);
-  profileEdit.close();
+  api.updateProfile(items.name, items.proffesion).then((res) => {
+    userInfo.setUserInfo(items.name, items.proffesion);
+    profileEdit.close();
+  });
 }
-
 profileEditButton.addEventListener('click', () => {
   nameInput.value = userInfo.getUserInfo().userName;
   profInput.value = userInfo.getUserInfo().aboutUser;
