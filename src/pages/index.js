@@ -3,7 +3,9 @@ import {Card} from '../scripts/components/Card.js';
 import {FormValidator} from '../scripts/components/FormValidator.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
+import PopupConfirm  from '../scripts/components/PopupConfirm';
 import UserInfo from '../scripts/components/UserInfo.js';
+import Section from '../scripts/components/Section.js';
 import Api from '../scripts/components/Api.js';
 
 import {
@@ -24,15 +26,17 @@ import {
   cardsContainer,
   cardTemplate,
   token,
-  server
+  server,
 } from '../scripts/utils/constants.js';
 
-import {Section} from '../scripts/components/Section.js';
-
+const popupConfirm = new PopupConfirm(document.querySelector('.popup-remove-confirm'));
+popupConfirm.setEventListeners();
 const profileEdit = new PopupWithForm(popupEditProfile, handleFormProfileSubmit);
 profileEdit.setEventListeners();
 const popupWithImage = new PopupWithImage(popupIllustration);
 popupWithImage.setEventListeners();
+
+
 
 const userInfo = new UserInfo({userName: profileName, userAbout: profileProf});
 
@@ -45,7 +49,7 @@ const api = new Api({
 });
 
 const cardRender =  new Section({renderer: (cards) => {
-  const card = createCard(cards.name, cards.link, cards.likes.length)
+  const card = createCard(cards.owner._id, cards.name, cards.link, cards.likes.length)
   cardRender.addItem(card);
  }}, cardsContainer);
 
@@ -53,10 +57,12 @@ api.getInitialCards('/cards').then((cards) => {
   cardRender.renderedItems(cards);
 }).catch(err => console.log('Ошибка ' + err));
 
+let myId;
 api.getProfile('/users/me').then((profile) => {
   profileName.textContent = profile.name;
   profileProf.textContent = profile.about;
   profileAvatar.src = profile.avatar;
+  myId =  profile._id;
 }).catch(err => console.log('Ошибка ' + err));
 
 function disableButton(button, config) {
@@ -68,8 +74,8 @@ function handleCardClick(name, link) {
   popupWithImage.open(name, link);
 }
 
-function createCard(link, image, cardNumbersLikes) {
-  return new Card(link, image, cardNumbersLikes, cardTemplate, handleCardClick).renderCard()
+function createCard(cardId, link, image, cardNumbersLikes) {
+  return new Card(myId ,cardId, link, image, cardNumbersLikes, cardTemplate, handleCardClick, handleDeleteIconClick).renderCard()
 }
 
 const formAddCard = new PopupWithForm(popupAddCard, handleFormCardSubmit); 
@@ -78,7 +84,7 @@ formAddCard.setEventListeners();
 function handleFormCardSubmit (evt, items) {
   evt.preventDefault();
   api.addCard(items.name, items.image).then((res) => {
-     cardRender.addItem(createCard(items.name, items.image), cardsContainer);
+     cardRender.addItem(createCard(res.owner._id, res.name, res.link, res.likes.length ), cardsContainer);
      formAddCard.close();
   }).catch(err => console.log('Ошибка ' + err));;
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -102,6 +108,10 @@ cardAddButton.addEventListener('click', () => {
   validateAddCardForm.resetValidation();
   formAddCard.open();  
 });
+
+function handleDeleteIconClick() {
+  popupConfirm.open();
+}
 
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
 const validateEditProfileForm = new FormValidator(configValidation, popupProfileFormElement);

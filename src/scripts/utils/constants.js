@@ -33,7 +33,6 @@ export const cardsContainer = document.querySelector('.cards');
 export const cardTemplate = document.querySelector('.card-template').content;
 
 export const ESCKEY = 'Escape';
-
 // export const initialCards = api.getInitialCards('/cards').then((cards) => console.log(cards));
 // [
 //   {

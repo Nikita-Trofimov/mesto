@@ -1,10 +1,13 @@
 export class Card {
-  constructor (cardName, cardLink, cardNumbersLikes, cardTemplate, handleCardClick) {
+  constructor (myId, cardOwnerId, cardName, cardLink, cardNumbersLikes, cardTemplate, handleCardClick, handleDeleteIconClick) {
+    this._myId = myId;
+    this._cardOwnerId = cardOwnerId;
     this._cardName = cardName;
     this._cardLink = cardLink;
     this._cardNumbersLikes = cardNumbersLikes;
     this._cardTemplate = cardTemplate;
     this._handleCardClick = handleCardClick;
+    this._handleDeleteIconClick = handleDeleteIconClick;
   }
   
   _handleCardLike(evt) {
@@ -22,10 +25,16 @@ export class Card {
 
   _setEventListeners() {
     this._cardLike.addEventListener('click', this._handleCardLike);
-    this._removeCardButton.addEventListener('click', this._handleRemoveCard);
+    // this._removeCardButton.addEventListener('click', this._handleRemoveCard);
     this._cardImage.addEventListener('click', () => {
       this._handleCardClick(this._cardName, this._cardLink)
     });
+    if (this._myId !== this._cardOwnerId){
+      this._removeCardButton.classList.add('card__remove_display-none');
+    }else {
+      this._removeCardButton.addEventListener('click', this._handleDeleteIconClick);
+    }
+    
   }
 
   _createCard () {
@@ -38,7 +47,6 @@ export class Card {
     this._cardImage.alt = this._cardName;
     this._cardImage.src = this._cardLink;
     this._setEventListeners();
-    
     return this._cardElement;
   }
 
