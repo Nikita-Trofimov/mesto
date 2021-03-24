@@ -1,6 +1,7 @@
 export class Card {
-  constructor (myId, cardOwnerId, cardName, cardLink, cardNumbersLikes, cardTemplate, handleCardClick, handleDeleteIconClick) {
+  constructor (myId, cardOwnerId, cardName, cardLink, cardId,  cardNumbersLikes, cardTemplate, handleCardClick, handleDeleteIconClick) {
     this._myId = myId;
+    this._cardId = cardId;
     this._cardOwnerId = cardOwnerId;
     this._cardName = cardName;
     this._cardLink = cardLink;
@@ -13,11 +14,7 @@ export class Card {
   _handleCardLike(evt) {
     evt.target.classList.toggle('card__like_black');
   }
-  
-  _handleRemoveCard(evt) {
-    evt.target.closest('.card').remove();
-  }
-
+ 
   _getTemplate() {
     this._cardElement = this._cardTemplate.cloneNode(true);
     return this._cardElement;
@@ -25,14 +22,13 @@ export class Card {
 
   _setEventListeners() {
     this._cardLike.addEventListener('click', this._handleCardLike);
-    // this._removeCardButton.addEventListener('click', this._handleRemoveCard);
     this._cardImage.addEventListener('click', () => {
       this._handleCardClick(this._cardName, this._cardLink)
     });
     if (this._myId !== this._cardOwnerId){
       this._removeCardButton.classList.add('card__remove_display-none');
     }else {
-      this._removeCardButton.addEventListener('click', this._handleDeleteIconClick);
+      this._removeCardButton.addEventListener('click', (evt) => this._handleDeleteIconClick(evt));
     }
     
   }
@@ -52,5 +48,6 @@ export class Card {
 
   renderCard(){
     return this._createCard();
+    
   }
 }
