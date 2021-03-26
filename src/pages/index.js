@@ -55,13 +55,7 @@ const api = new Api({
   }
 });
 
-const cardRender =  new Section({renderer: (cards) => {
-  const card = createCard(cards.owner._id, cards.name, cards.link,cards._id, cards.likes)
-  cardRender.addItem(card);
- }}, cardsContainer);
-
 let myId;
-
 api.getInitialData()
 .then((res) => {
   const [cards, profile] = res;
@@ -89,6 +83,11 @@ function createCard(cardOwnerId, link, image, cardId, likes) {
     .renderCard()
   return card;
 }
+
+const cardRender =  new Section({renderer: (cards) => {
+  const card = createCard(cards.owner._id, cards.name, cards.link,cards._id, cards.likes)
+  cardRender.addItem(card);
+ }}, cardsContainer);
 
 profileEditButton.addEventListener('click', () => {
   popupEditProfileSubmitButton.textContent = 'Сохранить';
@@ -143,7 +142,6 @@ function handleUpdateAvatar (evt) {
     updateAvatar.close();
   })
   .catch(err => console.log('Ошибка ' + err));
-
 }
 
 function handleDeleteIconClick(evt) {
