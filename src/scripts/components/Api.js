@@ -16,12 +16,16 @@ export default class Api {
     });
   }
   
-  getInitialCards(url) {
+  _getInitialCards(url) {
     return this._fetch(url);
   }
 
-  getProfile(url) {
+  _getProfile(url) {
     return this._fetch(url)
+  }
+  
+  getInitialData() {
+    return Promise.all([this._getInitialCards('/cards'), this._getProfile('/users/me')])
   }
 
   updateProfile(name, about) {
@@ -92,8 +96,8 @@ export default class Api {
     }); 
   }
 
-  updateAvatar(avatar) {
-    return fetch(`${this._baseUrl}users/me/avatar`, {
+  udpateAvatar(avatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
@@ -106,7 +110,6 @@ export default class Api {
       return Promise.reject(`Ошибка: ${res.status}`);
     }); 
   }
-
 }
   
 

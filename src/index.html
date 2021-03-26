@@ -12,7 +12,9 @@
     </header>
     <main class="main">
       <section class="profile">
-        <img src="./images/avatar__kusto.jpg" alt="фото Жак-Ив Кусто" class="profile__photo">
+        <div class="profile__avatar-overlay">
+          <img src="./images/avatar__kusto.jpg" alt="фото Жак-Ив Кусто" class="profile__photo">
+        </div>
         <div class="profile__text">
             <h1 class="profile__title"></h1>
             <button type="button" class="profile__edit-button"></button>
@@ -71,6 +73,18 @@
         <h2 class="popup__title popup__title-confirm">Вы уверены?</h2>
         <form name="confirm" class="popup__form">
           <button type="submit" class="popup__submit-button popup__submit-button-confirm">Да</button>
+        </form>
+        <button type="button" class="popup__close-button"></button>
+      </div>
+    </section>
+
+    <section class="popup popup-edit-avatar">
+      <div class="popup__container">
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form name="add-card" class="popup__form" novalidate>
+          <input name="image" type="url" placeholder="Ссылка на картинку" class="popup__input popup__input_type_avtar-link" required>
+          <span class="image-input-error popup__error-message"></span>
+          <button type="submit" class="popup__submit-button">Сохранить</button>
         </form>
         <button type="button" class="popup__close-button"></button>
       </div>

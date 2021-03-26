@@ -16,6 +16,7 @@ export const popupEditProfile = document.querySelector('.popup-edit-profile');
 export const nameInput = popupEditProfile.querySelector('.popup__input_type_name'); 
 export const profInput = popupEditProfile.querySelector('.popup__input_type_profession');
 export const popupProfileFormElement = popupEditProfile.querySelector('.popup__form');
+export const popupEditProfileSubmitButton = popupProfileFormElement.querySelector('.popup__submit-button');
 
 const profile = document.querySelector('.profile');
 export const profileEditButton = profile.querySelector('.profile__edit-button');
@@ -32,31 +33,11 @@ export const cardsContainer = document.querySelector('.cards');
 
 export const cardTemplate = document.querySelector('.card-template').content;
 
+export const popupConfirm = document.querySelector('.popup-remove-confirm');
+
+export const popupUpdateAvatar = document.querySelector('.popup-edit-avatar');
+export const formUpdateAvatar = popupUpdateAvatar.querySelector('.popup__form');
+export const avatarLink = formUpdateAvatar.querySelector('.popup__input_type_avtar-link');
+export const popupUpdateAvatarSubmitButton = formUpdateAvatar.querySelector('.popup__submit-button');
+
 export const ESCKEY = 'Escape';
-// export const initialCards = api.getInitialCards('/cards').then((cards) => console.log(cards));
-// [
-//   {
-//     name: 'Архыз',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-//   },
-//   {
-//     name: 'Челябинская область',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-//   },
-//   {
-//     name: 'Иваново',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-//   },
-//   {
-//     name: 'Камчатка',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-//   },
-//   {
-//     name: 'Холмогорский район',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-//   },
-//   {
-//     name: 'Байкал',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-//   }
-// ]; 
