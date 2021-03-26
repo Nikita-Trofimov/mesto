@@ -70,7 +70,6 @@ api.getInitialData()
   profileAvatar.src = profile.avatar;
   myId =  profile._id;
   cardRender.renderedItems(cards);
-  console.log(res);
 })
 .catch(err => console.log('Ошибка ' + err));
 
