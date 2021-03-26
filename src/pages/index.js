@@ -61,6 +61,7 @@ const cardRender =  new Section({renderer: (cards) => {
  }}, cardsContainer);
 
 let myId;
+
 api.getInitialData()
 .then((res) => {
   const [cards, profile] = res;
