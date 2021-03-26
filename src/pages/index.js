@@ -49,13 +49,15 @@ const api = new Api({
 });
 
 const cardRender =  new Section({renderer: (cards) => {
-  const card = createCard(cards.owner._id, cards.name, cards.link,cards._id, cards.likes.length)
+  const card = createCard(cards.owner._id, cards.name, cards.link,cards._id, cards.likes)
   cardRender.addItem(card);
  }}, cardsContainer);
 
 api.getInitialCards('/cards').then((cards) => {
   cardRender.renderedItems(cards);
 }).catch(err => console.log('Ошибка ' + err));
+
+
 
 let myId;
 api.getProfile('/users/me').then((profile) => {
@@ -74,8 +76,11 @@ function handleCardClick(name, link) {
   popupWithImage.open(name, link);
 }
 
-function createCard(cardOwnerId, link, image, cardId, cardNumbersLikes) {
-  return new Card(myId ,cardOwnerId, link, image, cardId, cardNumbersLikes, cardTemplate, handleCardClick, handleDeleteIconClick).renderCard()
+function createCard(cardOwnerId, link, image, cardId, likes) {
+  let card = new Card(myId ,cardOwnerId, link, image, cardId, likes, cardTemplate, 
+    handleCardClick, handleDeleteIconClick, handleLikeCard)
+    .renderCard()
+  return card;
 }
 
 const formAddCard = new PopupWithForm(popupAddCard, handleFormCardSubmit); 
@@ -84,7 +89,8 @@ formAddCard.setEventListeners();
 function handleFormCardSubmit (evt, items) {
   evt.preventDefault();
   api.addCard(items.name, items.image).then((res) => {
-     cardRender.addItem(createCard(res.owner._id, res.name, res.link, res._id, res.likes.length), cardsContainer);
+     let card = createCard(res.owner._id, res.name, res.link, res._id, res.likes);
+     cardRender.addItem(card, cardsContainer);
      formAddCard.close();
   }).catch(err => console.log('Ошибка ' + err));;
   disableButton(popupCardFormSubmitButton, configValidation);
@@ -116,15 +122,33 @@ function handleDeleteIconClick(evt) {
 
 function handleConfirmButton(evt, cardElement, cardId) {
     evt.preventDefault();
-    console.log(cardId);
     api.removeCard(cardId)
     .then((res) => {
       cardElement.remove();
       popupConfirm.close();
     })
     .catch(err => console.log('Ошибка ' + err));
-    
  }
+
+function handleLikeCard(evt, cardId, card) {
+  if(!card.isLiked) {
+    api.likeCard(cardId)
+    .then((res) => {
+        evt.target.classList.toggle('card__like_black');  
+        evt.target.closest('.card__like-info-container').
+        querySelector('.card__likes-number').textContent = res.likes.length;
+      })
+    .catch(err => console.log('Ошибка ' + err));
+    }
+  else api.removeLike(cardId)
+  .then((res) => {
+    evt.target.classList.toggle('card__like_black');  
+    evt.target.closest('.card__like-info-container').
+    querySelector('.card__likes-number').textContent = res.likes.length;
+  })
+  .catch(err => console.log('Ошибка ' + err));
+  card.setLikeInfo();
+  }
 
 const validateAddCardForm = new FormValidator(configValidation, popupCardFormElement);
 const validateEditProfileForm = new FormValidator(configValidation, popupProfileFormElement);
