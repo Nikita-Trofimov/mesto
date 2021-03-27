@@ -13,7 +13,13 @@ export class Card {
     this._handleDeleteIconClick = handleDeleteIconClick;
     this._handleLikeCard = handleLikeCard;
   }
- 
+
+  updateLikes(likes, evt) {
+    evt.target.classList.toggle('card__like_black');  
+    evt.target.closest('.card__like-info-container').
+    querySelector('.card__likes-number').textContent = likes.length;
+  }
+   
   setLikeInfo(){
     this.isLiked = !this.isLiked;
   }

@@ -136,7 +136,7 @@ function handleUpdateAvatar (evt) {
   evt.preventDefault();
   api.udpateAvatar(avatarLink.value)
   .then((res) => {
-    userInfo.setUserInfo (res.avatar, res.name, res.about);
+    userInfo.setUserInfo(res.avatar, res.name, res.about);
     updateAvatar.close();
   })
   .catch(err => console.log('Ошибка ' + err));
@@ -160,17 +160,13 @@ function handleLikeCard(evt, cardId, card) {
   if(!card.isLiked) {
     api.likeCard(cardId)
     .then((res) => {
-        evt.target.classList.toggle('card__like_black');  
-        evt.target.closest('.card__like-info-container').
-        querySelector('.card__likes-number').textContent = res.likes.length;
+        card.updateLikes(res.likes, evt);
       })
     .catch(err => console.log('Ошибка ' + err));
     }
   else api.removeLike(cardId)
   .then((res) => {
-    evt.target.classList.toggle('card__like_black');  
-    evt.target.closest('.card__like-info-container').
-    querySelector('.card__likes-number').textContent = res.likes.length;
+    card.updateLikes(res.likes, evt);
   })
   .catch(err => console.log('Ошибка ' + err));
   card.setLikeInfo();
