@@ -45,7 +45,7 @@ popupWithImage.setEventListeners();
 const formAddCard = new PopupWithForm(popupAddCard, handleFormCardSubmit); 
 formAddCard.setEventListeners();
 
-const userInfo = new UserInfo({userName: profileName, userAbout: profileProf});
+const userInfo = new UserInfo({userName: profileName, userAbout: profileProf, avatar: profileAvatar});
 
 const api = new Api({
   baseUrl: server,
@@ -59,9 +59,7 @@ let myId;
 api.getInitialData()
 .then((res) => {
   const [cards, profile] = res;
-  profileName.textContent = profile.name;
-  profileProf.textContent = profile.about;
-  profileAvatar.src = profile.avatar;
+  userInfo.setUserInfo(profile.avatar, profile.name, profile.about);
   myId =  profile._id;
   cardRender.renderedItems(cards);
 })
@@ -78,7 +76,7 @@ function waitResponse(button) {
 }
 
 function createCard(cardOwnerId, link, image, cardId, likes) {
-  let card = new Card(myId ,cardOwnerId, link, image, cardId, likes, cardTemplate, 
+  const card = new Card(myId ,cardOwnerId, link, image, cardId, likes, cardTemplate, 
     handleCardClick, handleDeleteIconClick, handleLikeCard)
     .renderCard()
   return card;
@@ -117,7 +115,7 @@ function handleFormCardSubmit (evt, items) {
   evt.preventDefault();
   waitResponse(popupCardFormSubmitButton);
   api.addCard(items.name, items.image).then((res) => {
-     let card = createCard(res.owner._id, res.name, res.link, res._id, res.likes);
+     const card = createCard(res.owner._id, res.name, res.link, res._id, res.likes);
      cardRender.addItem(card, cardsContainer);
      formAddCard.close();
      disableButton(popupCardFormSubmitButton, configValidation);
@@ -128,7 +126,7 @@ function handleFormProfileSubmit(evt, items) {
   evt.preventDefault();
   waitResponse(popupEditProfileSubmitButton);
   api.updateProfile(items.name, items.proffesion).then((res) => {
-    userInfo.setUserInfo(res.name, res.about);
+    userInfo.setUserInfo(res.avatar, res.name, res.about);
     profileEdit.close();
   }).catch(err => console.log('Ошибка ' + err));
 }
@@ -138,7 +136,7 @@ function handleUpdateAvatar (evt) {
   evt.preventDefault();
   api.udpateAvatar(avatarLink.value)
   .then((res) => {
-    profileAvatar.src = res.avatar
+    userInfo.setUserInfo (res.avatar, res.name, res.about);
     updateAvatar.close();
   })
   .catch(err => console.log('Ошибка ' + err));
