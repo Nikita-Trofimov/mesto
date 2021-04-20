@@ -18,8 +18,4 @@ export default class PopupConfirm extends Popup {
     this._cardToRemove = card;
     this._cardId = cardId;
   }
-
-
-
-
 }
